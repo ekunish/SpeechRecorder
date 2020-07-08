@@ -11,11 +11,14 @@ import Speech
 import AVFoundation
 import Photos
 
-class ViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
+class ViewController: UIViewController {
     
 
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var CaptureImageView: UIImageView!
+    
+    var capture: Capture!
     
     var isRecording: Bool = false
     
@@ -25,65 +28,6 @@ class ViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var recognitionReq: SFSpeechAudioBufferRecognitionRequest?
     var recognitionTask: SFSpeechRecognitionTask?
     
-    // Video Camera
-    var videoDevice: AVCaptureDevice?
-    let fileOutput = AVCaptureMovieFileOutput()
-    
-    
-    func setUpCamera() {
-        let captureSession: AVCaptureSession = AVCaptureSession()
-        self.videoDevice = self.defaultCamera()
-        let audioDevice: AVCaptureDevice? = AVCaptureDevice.default(for: AVMediaType.audio)
-
-        // video input setting
-        let videoInput: AVCaptureDeviceInput = try! AVCaptureDeviceInput(device: videoDevice!)
-        captureSession.addInput(videoInput)
-
-        // audio input setting
-        let audioInput = try! AVCaptureDeviceInput(device: audioDevice!)
-        captureSession.addInput(audioInput)
-
-        // max duration setting
-        self.fileOutput.maxRecordedDuration = CMTimeMake(value: 60, timescale: 1)
-
-        captureSession.addOutput(fileOutput)
-
-        // video quality setting
-        captureSession.beginConfiguration()
-        if captureSession.canSetSessionPreset(.hd4K3840x2160) {
-            captureSession.sessionPreset = .hd4K3840x2160
-        } else if captureSession.canSetSessionPreset(.high) {
-            captureSession.sessionPreset = .high
-        }
-        captureSession.commitConfiguration()
-
-        captureSession.startRunning()
-
-        // プレビュー表示用のレイヤ
-        var cameraPreviewLayer : AVCaptureVideoPreviewLayer
-        // 指定したAVCaptureSessionでプレビューレイヤを初期化
-        cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        // プレビューレイヤが、カメラのキャプチャーを縦横比を維持した状態で、表示するように設定
-        cameraPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        // プレビューレイヤの表示の向きを設定
-        cameraPreviewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-
-        cameraPreviewLayer.frame = view.frame
-        self.view.layer.insertSublayer(cameraPreviewLayer, at: 0)
-    }
-    
-    func defaultCamera() -> AVCaptureDevice? {
-        if let device = AVCaptureDevice.default(.builtInDualCamera, for: AVMediaType.video, position: .back) {
-            return device
-        } else if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: AVMediaType.video, position: .back) {
-            return device
-        } else {
-            return nil
-        }
-    }
-
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,7 +36,9 @@ class ViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         audioEngine = AVAudioEngine()
         textView.text = ""
         
-        self.setUpCamera()
+        capture = Capture(CaptureImageView: CaptureImageView)
+
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -105,6 +51,47 @@ class ViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             }
         }
     }
+
+    
+    
+    @IBAction func recordButtonTapped(_ sender: Any) {
+        if isRecording == false{
+            isRecording = true
+            capture.setRecordStatus(_isRecording: isRecording)
+            
+            recordButton.setTitle("Recording now", for: .normal)
+            recordButton.setTitleColor(UIColor.systemPink, for: .normal)
+            try! startLiveTranscription()
+        }else{
+            isRecording = false
+            capture.setRecordStatus(_isRecording: isRecording)
+            
+            recordButton.setTitle("Record", for: .normal)
+            recordButton.setTitleColor(UIColor.systemBlue, for: .normal)
+            stopLiveTranscription()
+        }
+
+        print("tapped")
+    }
+    
+    /*
+    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        
+        PHPhotoLibrary.shared().performChanges({
+             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)}) {
+             saved, error in
+             if saved {
+                  print("Save status SUCCESS")
+             }
+        }
+        
+        // show alert
+        let alert: UIAlertController = UIAlertController(title: "Recorded!", message: outputFileURL.absoluteString, preferredStyle:  .alert)
+        let okAction: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    */
     
     
     func stopLiveTranscription() {
@@ -154,47 +141,6 @@ class ViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
           }
         }
       })
-    }
-    
-    
-    
-    @IBAction func recordButtonTapped(_ sender: Any) {
-        if isRecording == false{
-            let tempDirectory: URL = URL(fileURLWithPath: NSTemporaryDirectory())
-            let fileURL: URL = tempDirectory.appendingPathComponent("temp.mov")
-            print(tempDirectory)
-            print(fileURL)
-            fileOutput.startRecording(to: fileURL, recordingDelegate: self)
-            
-            recordButton.setTitle("Recording now", for: .normal)
-            recordButton.setTitleColor(UIColor.systemPink, for: .normal)
-            try! startLiveTranscription()
-        }else if self.fileOutput.isRecording {
-            fileOutput.stopRecording()
-            
-            recordButton.setTitle("Record", for: .normal)
-            recordButton.setTitleColor(UIColor.systemBlue, for: .normal)
-            stopLiveTranscription()
-        }
-        isRecording = !isRecording
-        print("tapped")
-    }
-    
-    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
-        
-        PHPhotoLibrary.shared().performChanges({
-             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)}) {
-             saved, error in
-             if saved {
-                  print("Save status SUCCESS")
-             }
-        }
-        
-        // show alert
-        let alert: UIAlertController = UIAlertController(title: "Recorded!", message: outputFileURL.absoluteString, preferredStyle:  .alert)
-        let okAction: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
-        alert.addAction(okAction)
-        self.present(alert, animated: true, completion: nil)
     }
 }
 

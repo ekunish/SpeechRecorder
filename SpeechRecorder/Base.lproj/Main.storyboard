@@ -15,6 +15,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hXa-D9-X33">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wf5-e9-Dc6">
                                 <rect key="frame" x="107" y="712" width="200" height="50"/>
                                 <constraints>
@@ -39,9 +42,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Vo7-01-PS7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="8cW-1B-5zN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hXa-D9-X33" secondAttribute="trailing" id="DEn-t3-ghm"/>
                             <constraint firstItem="Vo7-01-PS7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Gc9-W5-qm6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wf5-e9-Dc6" secondAttribute="bottom" constant="100" id="MoH-H2-66v"/>
+                            <constraint firstItem="hXa-D9-X33" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Ntf-JZ-cyQ"/>
                             <constraint firstItem="wf5-e9-Dc6" firstAttribute="top" secondItem="Vo7-01-PS7" secondAttribute="bottom" constant="30" id="PXO-WA-p4m"/>
+                            <constraint firstItem="hXa-D9-X33" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Rq6-RJ-t16"/>
+                            <constraint firstAttribute="bottom" secondItem="hXa-D9-X33" secondAttribute="bottom" id="Z1y-h3-KNS"/>
                             <constraint firstItem="Vo7-01-PS7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="h2i-Wz-JIG"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Vo7-01-PS7" secondAttribute="trailing" constant="30" id="oYa-zD-eao"/>
                             <constraint firstItem="wf5-e9-Dc6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v5L-Pb-bah"/>
@@ -49,6 +56,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="CaptureImageView" destination="hXa-D9-X33" id="ZEk-jl-Xxr"/>
                         <outlet property="recordButton" destination="wf5-e9-Dc6" id="cGP-Ut-QCJ"/>
                         <outlet property="textView" destination="Vo7-01-PS7" id="16I-dJ-HKl"/>
                     </connections>

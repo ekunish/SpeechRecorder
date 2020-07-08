@@ -15,6 +15,7 @@
 		F6262E8B24B34EB0007A52BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6262E8924B34EB0007A52BB /* LaunchScreen.storyboard */; };
 		F6262E9624B34EB0007A52BB /* SpeechRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6262E9524B34EB0007A52BB /* SpeechRecorderTests.swift */; };
 		F6262EA124B34EB0007A52BB /* SpeechRecorderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6262EA024B34EB0007A52BB /* SpeechRecorderUITests.swift */; };
+		F6262EAF24B47698007A52BB /* Capture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6262EAE24B47698007A52BB /* Capture.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		F6262E9C24B34EB0007A52BB /* SpeechRecorderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpeechRecorderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6262EA024B34EB0007A52BB /* SpeechRecorderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecorderUITests.swift; sourceTree = "<group>"; };
 		F6262EA224B34EB0007A52BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F6262EAE24B47698007A52BB /* Capture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capture.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				F6262E7E24B34EAD007A52BB /* AppDelegate.swift */,
+				F6262EAE24B47698007A52BB /* Capture.swift */,
 				F6262E8024B34EAD007A52BB /* SceneDelegate.swift */,
 				F6262E8224B34EAD007A52BB /* ViewController.swift */,
 				F6262E8424B34EAD007A52BB /* Main.storyboard */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6262EAF24B47698007A52BB /* Capture.swift in Sources */,
 				F6262E8324B34EAD007A52BB /* ViewController.swift in Sources */,
 				F6262E7F24B34EAD007A52BB /* AppDelegate.swift in Sources */,
 				F6262E8124B34EAD007A52BB /* SceneDelegate.swift in Sources */,
